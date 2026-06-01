@@ -1,11 +1,3 @@
-
-**`Ctrl + Shift + Alt + R`**
-ubuntu系统自带录制视频快捷键
-
-视觉伺服
-固定 PD → 自适应增益 PD 、神经网络PD控制、前馈补偿PD控制→ 带约束的 MPC → 视觉 + 阻抗混合控制 → 学习增强 MPC / 学习补偿
-
-
 **安装PlotJuggler**：
 ```
 sudo apt install ros-humble-plotjuggler*
@@ -35,11 +27,14 @@ ros2 bag record -o ~/bags/LADRC_sample_data1 \
 
 ```
 
-ros2 run rqt_plot rqt_plot
-
 速度前馈预测器未来尝试方法：
 卡尔曼滤波器
 跟踪微分器
 萨维茨基-戈雷滤波器
 相位超前补偿
 
+**`Ctrl + Shift + Alt + R`**
+ubuntu系统自带录制视频快捷键
+
+视觉伺服
+固定 PD → 自适应增益 PD 、神经网络PD控制、前馈补偿PD控制→ 带约束的 MPC → 视觉 + 阻抗混合控制 → 学习增强 MPC / 学习补偿
