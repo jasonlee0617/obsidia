@@ -1,0 +1,225 @@
+{
+  "main": {
+    "id": "126d0ab4bbd6fbd9",
+    "type": "split",
+    "children": [
+      {
+        "id": "85b8f5874b60774d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "67abe2712a8bd524",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Git相关操作.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Git相关操作"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "dde2244e492c2c1e",
+    "type": "split",
+    "children": [
+      {
+        "id": "e3de678cdd0f56ed",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7ce03004e08d7442",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "25f6feb3e2c3bd36",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": " ",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "a25e4f0725247994",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 345.5
+  },
+  "right": {
+    "id": "d8182cbda917e024",
+    "type": "split",
+    "children": [
+      {
+        "id": "e98a09dc74b8c346",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e3b3f1d7c7c02e70",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "EWMA-指数加权移动平均/定义以及概念.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "定义以及概念 的反向链接列表"
+            }
+          },
+          {
+            "id": "c2216cde149f0277",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "EWMA-指数加权移动平均/定义以及概念.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "定义以及概念 的出链列表"
+            }
+          },
+          {
+            "id": "c24ebd7ec705e5bd",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "ecdedf63b1637b09",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "EWMA-指数加权移动平均/定义以及概念.md"
+              },
+              "icon": "lucide-list",
+              "title": "定义以及概念 的大纲"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "bases:新建数据库": false,
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "obsidian-excalidraw-plugin:新建绘图文件": false,
+      "templater-obsidian:Templater": false,
+      "vscode-editor:新建代码文件": false
+    }
+  },
+  "active": "67abe2712a8bd524",
+  "lastOpenFiles": [
+    "Obsidian Vault.code-workspace",
+    "gazebo机械臂仿真/Gazebo-yolo_pick.launch.py仿真构建步骤.md",
+    "gazebo机械臂仿真/Gazebo-pick_block.launch.py仿真构建步骤.md",
+    "驱动、cude依赖安装.md",
+    "Git相关操作.md",
+    "工作安排.md",
+    "常用功能.md",
+    "servo.md",
+    "ros系统一键安装.md",
+    "ROS 2 移动机器人导航与自动驾驶/Autoware.universe 源码下载编译.md",
+    "ROS 2 移动机器人导航与自动驾驶/Autoware学习文档.md",
+    "ROS 2 移动机器人导航与自动驾驶/fishbot项目复现.md",
+    "ROS 2 移动机器人导航与自动驾驶/ROS 2 移动机器人导航系统知识学习.md",
+    "ROS 2 移动机器人导航与自动驾驶/WVCSC_S2Z_UTB_ARM.md",
+    "moveit2.py 的角色.md",
+    "隐藏、恢复工作空间.md",
+    "gz_launch包构建.md",
+    "ROS 2 移动机器人导航与自动驾驶/卡尔曼滤波算法的推导：最优递推估计.md",
+    "gazebo机械臂仿真/仿真过程错误解决.md",
+    "gazebo机械臂仿真/dummy2机械臂仿真知识点.md",
+    "机械臂MPC动态避障/安装 acados (Linux、Ubuntu 22.04 下).md",
+    "安装Odrivetool.md",
+    "机械臂MPC动态避障/win10系统下安装acados.md",
+    "深度强化学习在自动驾驶中的应用/DDPG.md",
+    "codex配置步骤.md",
+    "ROS 2 移动机器人导航与自动驾驶/Image storage/文本_mn7y思维导图.png",
+    "ROS 2 移动机器人导航与自动驾驶/Image storage/Pasted image 20260520173358.png",
+    "ROS 2 移动机器人导航与自动驾驶/Image storage/Pasted image 20260520172652.png",
+    "ROS 2 移动机器人导航与自动驾驶/Image storage/Pasted image 20260520172619.png",
+    "ROS 2 移动机器人导航与自动驾驶/Image storage/Pasted image 20260520172606.png",
+    "ROS 2 移动机器人导航与自动驾驶/Image storage/Pasted image 20260520172557.png",
+    "ROS 2 移动机器人导航与自动驾驶/Image storage/Pasted image 20260520172547.png",
+    "ROS 2 移动机器人导航与自动驾驶/Image storage/Pasted image 20260520172535.png",
+    "ROS 2 移动机器人导航与自动驾驶/Image storage/Pasted image 20260520172522.png",
+    "ROS 2 移动机器人导航与自动驾驶/Image storage/Pasted image 20260520172510.png",
+    "ROS 2 移动机器人导航与自动驾驶/Image storage",
+    "小车相机与图像处理/视觉追踪/视觉追随总框架.md",
+    "机械臂MPC动态避障",
+    "ROS 2 移动机器人导航与自动驾驶",
+    "nzp2846.tmp",
+    "Camera_ws工作空间.zip",
+    "nzpC80.tmp",
+    "yolov8-obb识别抓取.zip",
+    "yolov8-obb识别抓取/抓取节点构建/Image storage",
+    "yolov8-obb识别抓取/抓取节点构建",
+    "yolov8-obb识别抓取/机械臂ros2_control硬件接口",
+    "未命名.canvas",
+    "EWMA-指数加权移动平均/11.canvas",
+    "未命名 1.canvas",
+    "EWMA-指数加权移动平均/定义 1.canvas",
+    "2.canvas",
+    "3.canvas"
+  ]
+}
