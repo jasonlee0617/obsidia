@@ -200,81 +200,12 @@ ros2 pkg prefix autoware_launch
 ros2 launch autoware_launch planning_simulator.launch.xml --show-args
 ```
 
-## 1.3 正常电脑编译：未安装 acados
 
-适用于普通开发电脑还没有 acados 的情况。先安装 acados，再执行 `1.2` 的编译流程。
-
-### 1.3.1 安装 acados 基础依赖
-
-```bash
-sudo apt update
-sudo apt install -y \
-  git cmake build-essential python3-venv python3-pip python3-dev \
-  libblas-dev liblapack-dev
-```
-
-### 1.3.2 下载并编译 acados
-
-```bash
-mkdir -p /home/eisa/.local
-cd /home/eisa/.local
-git clone https://github.com/acados/acados.git
-cd /home/eisa/.local/acados
-git submodule update --recursive --init
-
-mkdir -p build
-cd build
-cmake -DACADOS_WITH_QPOASES=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON ..
-make install -j$(nproc)
-```
-
-### 1.3.3 配置 acados Python 环境
-
-```bash
-cd /home/eisa/.local/acados
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip setuptools wheel
-python -m pip install "numpy<2" scipy matplotlib casadi
-python -m pip install -e interfaces/acados_template
-deactivate
-```
-
-验证：
-
-```bash
-/home/eisa/.local/acados/.venv/bin/python3 - <<'EOF'
-import sys
-import casadi
-import numpy
-import acados_template
-print("Python:", sys.executable)
-print("casadi:", casadi.__version__)
-print("numpy:", numpy.__version__)
-print("acados_template OK")
-EOF
-```
-
-### 1.3.4 写入环境变量
-
-```bash
-grep -q "ACADOS_SOURCE_DIR=/home/eisa/.local/acados" ~/.bashrc || cat >> ~/.bashrc <<'EOF'
-export ACADOS_SOURCE_DIR=/home/eisa/.local/acados
-export CMAKE_PREFIX_PATH="/home/eisa/.local/acados:${CMAKE_PREFIX_PATH}"
-export LD_LIBRARY_PATH="/home/eisa/.local/acados/lib:${LD_LIBRARY_PATH}"
-export PATH="/home/eisa/.local/acados/bin:${PATH}"
-export PYTHONPATH="/home/eisa/.local/acados/interfaces/acados_template:${PYTHONPATH}"
-EOF
-source ~/.bashrc
-```
-
-然后回到 `1.2.2` 执行 Autoware 编译。
-
-## 1.4 工控机编译：清理旧环境并重新编译
+## 1.3 工控机编译：清理旧环境并重新编译
 
 适用于 WVCSC 工控机 `/home/eisa/autoware` 已经编译过，但中途出现过卡死、中断、CMake 缓存污染、包残缺安装等情况。
 
-### 1.4.1 清理旧编译产物
+### 1.3.1 清理旧编译产物
 
 只删除编译产物，不删除源码：
 
@@ -296,7 +227,7 @@ rm -rf build install log
 /home/eisa/autoware_data
 ```
 
-### 1.4.2 检查 swap
+### 1.3.2 检查 swap
 
 工控机编译 Autoware 容易因为内存压力导致桌面卡住或编译中断。建议至少保证 30G 以上总内存加 swap。
 
@@ -322,57 +253,25 @@ swapon --show
 free -h
 ```
 
-### 1.4.3 工控机正式编译命令
+### 1.3.3 工控机正式编译命令
 
 按当前要求，工控机也使用下面这个主编译命令：
 
-```bash
-cd /home/eisa/autoware
-source /opt/ros/humble/setup.bash
-
-export ACADOS_SOURCE_DIR=/home/eisa/.local/acados
-export CMAKE_PREFIX_PATH="/home/eisa/.local/acados:${CMAKE_PREFIX_PATH}"
-export LD_LIBRARY_PATH="/home/eisa/.local/acados/lib:${LD_LIBRARY_PATH}"
-export PATH="/home/eisa/.local/acados/bin:${PATH}"
-export PYTHONPATH="/home/eisa/.local/acados/interfaces/acados_template:${PYTHONPATH}"
-
-colcon build \
-  --symlink-install \
-  --parallel-workers 2 \
-  --cmake-args -DCMAKE_BUILD_TYPE=Release
+```
+git clone https://github.com/autowarefoundation/autoware.git 
+cd autoware
+git checkout 1.8.0
+ansible-playbook autoware.dev_env.install_dev_env --skip-tags nvidia
+cd autoware 
+mkdir -p src 
+vcs import src < repositories/autoware.repos
+sudo apt update && sudo apt upgrade rosdep update rosdep install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
+colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 ```
 
-如果桌面卡住，不一定代表编译停止。另开 TTY 或 SSH 后检查：
+### 1.3.4 编译完成验证
 
-```bash
-ps -o pid,ppid,pcpu,pmem,etime,cmd -C colcon -C cmake -C gmake -C make -C ninja -C cc1plus -C c++
-free -h
 ```
-
-如果内存持续打满、系统无响应，再考虑中断后改用更保守命令救急：
-
-```bash
-cd /home/eisa/autoware
-source /opt/ros/humble/setup.bash
-
-export ACADOS_SOURCE_DIR=/home/eisa/.local/acados
-export CMAKE_PREFIX_PATH="/home/eisa/.local/acados:${CMAKE_PREFIX_PATH}"
-export LD_LIBRARY_PATH="/home/eisa/.local/acados/lib:${LD_LIBRARY_PATH}"
-export PATH="/home/eisa/.local/acados/bin:${PATH}"
-export PYTHONPATH="/home/eisa/.local/acados/interfaces/acados_template:${PYTHONPATH}"
-
-colcon build \
-  --symlink-install \
-  --parallel-workers 1 \
-  --executor sequential \
-  --cmake-args -DCMAKE_BUILD_TYPE=Release
-```
-
-注意：上面 `parallel-workers 1` 是工控机救急方案；标准主流程仍以 `parallel-workers 2` 为准。
-
-### 1.4.4 编译完成验证
-
-```bash
 cd /home/eisa/autoware
 source /opt/ros/humble/setup.bash
 source install/setup.bash
@@ -383,9 +282,10 @@ ros2 pkg prefix tier4_perception_launch
 ros2 pkg prefix autoware_path_optimizer
 ```
 
+
 官方 planning simulator 参数验证：
 
-```bash
+```
 ros2 launch autoware_launch planning_simulator.launch.xml --show-args
 ```
 
@@ -415,9 +315,9 @@ ros2 launch wvcsc_autoware_bringup hybrid_real_vehicle.launch.xml \
   rviz:=true
 ```
 
-## 1.5 常见编译错误快速处理
+## 1.4 常见编译错误快速处理
 
-### 1.5.1 `autoware_launch` 找不到
+### 1.4.1 `autoware_launch` 找不到
 
 说明 `autoware_launch` 或它的上游依赖没有完整编译安装。
 
@@ -432,7 +332,7 @@ colcon build \
   --cmake-args -DCMAKE_BUILD_TYPE=Release
 ```
 
-### 1.5.2 缺少 `autoware_lidar_marker_localizer/package.sh`
+### 1.4.2 缺少 `autoware_lidar_marker_localizer/package.sh`
 
 错误类似：
 
@@ -453,43 +353,8 @@ colcon build \
 
 然后再编译目标 launch 包。
 
-### 1.5.3 `autoware_path_optimizer` 找不到 acados
 
-先确认 acados 环境变量：
-
-```bash
-export ACADOS_SOURCE_DIR=/home/eisa/.local/acados
-export CMAKE_PREFIX_PATH="/home/eisa/.local/acados:${CMAKE_PREFIX_PATH}"
-export LD_LIBRARY_PATH="/home/eisa/.local/acados/lib:${LD_LIBRARY_PATH}"
-```
-
-清理该包 CMake 缓存后重编：
-
-```bash
-cd /home/eisa/autoware
-source /opt/ros/humble/setup.bash
-
-colcon build \
-  --packages-select autoware_path_optimizer \
-  --symlink-install \
-  --cmake-clean-cache \
-  --parallel-workers 2 \
-  --cmake-args -DCMAKE_BUILD_TYPE=Release
-```
-
-如果仍失败：
-
-```bash
-rm -rf build/autoware_path_optimizer install/autoware_path_optimizer
-
-colcon build \
-  --packages-select autoware_path_optimizer \
-  --symlink-install \
-  --parallel-workers 2 \
-  --cmake-args -DCMAKE_BUILD_TYPE=Release
-```
-
-### 1.5.4 Ninja 和 Unix Makefiles 冲突
+### 1.4.3 Ninja 和 Unix Makefiles 冲突
 
 错误类似：
 
@@ -512,7 +377,7 @@ rm -rf build install log
 
 然后重新编译。
 
-### 1.5.5 `json.decoder.JSONDecodeError`
+### 1.4.4 `json.decoder.JSONDecodeError`
 
 通常是上一次编译中断导致 CMake reply JSON 空文件或损坏。
 
@@ -527,7 +392,7 @@ colcon build \
   --cmake-args -DCMAKE_BUILD_TYPE=Release
 ```
 
-### 1.5.6 `source install/setup.bash` 提示某包 `local_setup.bash` 不存在
+### 1.4.4 `source install/setup.bash` 提示某包 `local_setup.bash` 不存在
 
 说明该包 install 目录残缺。不要只手工创建空文件作为长期方案，应重新编译对应包：
 
@@ -543,12 +408,12 @@ colcon build \
   --cmake-args -DCMAKE_BUILD_TYPE=Release
 ```
 
-## 1.6本机源码编译编acados的情况
+## 1.5本机源码编译编acados的情况
 
 **acados 已经存在，问题不是没安装，而是 CMake 查找路径没有配置正确**
 
 解决办法：
-### 1.6.1acados环境路径写入
+### 1.5.1acados环境路径写入
 ```
 #在bashrc中写入相关路径，根据你下载安装编译的acados路径而定
 gedit ~/.bashrc
@@ -563,7 +428,7 @@ export CMAKE_PREFIX_PATH="$ACADOS_INSTALL_DIR:$CMAKE_PREFIX_PATH"
 export LD_LIBRARY_PATH="$ACADOS_INSTALL_DIR/lib:$LD_LIBRARY_PATH"
 ```
 
-### 1.6.2给 acados 创建 `.venv`
+### 1.5.2给 acados 创建 `.venv`
 
 ```
 #执行
@@ -579,7 +444,7 @@ ls /home/robot/桌面/acados_toolkit/acados/.venv/bin/python3
 /home/robot/桌面/acados_toolkit/acados/.venv/bin/python3
 ```
 
-### 1.6.3安装 acados Python 接口
+### 1.5.3安装 acados Python 接口
 
 ```
 #进入 acados 目录：
@@ -591,7 +456,7 @@ python -m pip install "numpy<2" scipy matplotlib casadi==3.7.2
 python -m pip install -e interfaces/acados_template
 deactivate
 ```
-### 1.6.4再次用 `.venv/bin/python3` 验证
+### 1.5.4再次用 `.venv/bin/python3` 验证
 
 ```
 /home/robot/桌面/acados_toolkit/acados/.venv/bin/python3 - <<'EOF'
@@ -615,7 +480,7 @@ numpy: 1.xx.x
 acados_template OK
 ```
 
-### 1.6.5清理编译
+### 1.5.5清理编译
 
 ```
 rm -rf src/*/*/autoware_path_optimizer/src/acados_mpc/c_generated_code
