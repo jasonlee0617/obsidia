@@ -899,3 +899,10 @@ git commit -m "convert serial to normal ROS2 package"
 ```
 git push
 ```
+
+# 6.重新设置仓库地址
+
+```
+##根据地址对应修改
+git remote set-url origin https://github.com/jasonlee0617/Wtbcar_autoware_nav2.git
+```
